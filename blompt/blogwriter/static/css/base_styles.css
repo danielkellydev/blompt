@@ -1,0 +1,74 @@
+@import url('https://fonts.googleapis.com/css2?family=Lobster&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    color: #333; /* General text color */
+    background-color: #FFE5B4;
+    line-height: 1.6;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+header {
+    color: #fff;
+    padding: 20px 0;
+    text-align: center;
+}
+
+header h1 {
+    font-family: 'Lobster', cursive;
+    font-size: 5em;
+    margin-bottom: 8px;
+    color: #333;
+    text-shadow: 
+    3px 3px 0px #FF0000, /* red */
+    6px 6px 0px #00FF00, /* green */
+    9px 9px 0px #0000FF; /* blue */
+transition: 0.3s;
+}
+
+header h1:hover {
+    transform: rotate(5deg) scale(1.1); /* Slightly rotates and enlarges the heading */
+    text-shadow: 
+        5px 5px 0px #FF0000, 
+        10px 10px 0px #00FF00,
+        15px 15px 0px #0000FF;
+}
+
+header p {
+    font-family: 'Pacifico', cursive;
+    font-weight: 300; /* Lighter font weight for the sub-heading */
+    font-size: 1.8em;
+    color: #333;
+    -webkit-background-clip: text; /* Clip background to text for gradient effect */
+    background-clip: text;
+}
+
+main {
+    padding: 40px 0;
+    width: 80%; /* Centering the content */
+    max-width: 100%;
+    overflow: hidden;
+}
+
+footer {
+    background-color: #2E2E2E; /* Dark footer for contrast */
+    color: #B5B5B5; /* Lighter text for better visibility on dark background */
+    padding: 20px 0;
+    text-align: center;
+    position: relative; /* Ensuring the footer is at the bottom */
+    width: 100%;
+    box-shadow: 0px -3px 10px rgba(0, 0, 0, 0.1);
+}
+
+footer p {
+    font-size: 0.9em;
+}

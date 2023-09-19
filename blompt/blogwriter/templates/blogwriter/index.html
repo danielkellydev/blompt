@@ -1,0 +1,108 @@
+{% extends "blogwriter/base.html" %}
+{% load static %}
+
+{% block title %}Blompt - AI Assisted Blog Writing{% endblock %}
+
+{% block head_extra %}
+    <!-- Any extra CSS or meta tags for the index page only -->
+    <link rel="stylesheet" href="{% static 'css/base_styles.css' %}">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+{% endblock %}
+
+{% block content %}
+    <section>
+        <p class="intro-text">Start writing your blog and get assistance from our AI.</p>
+
+        <!-- Your blog writing form and other elements go here -->
+        <div class="data-inputs">
+            <label for="audience">Target Audience:</label>
+            <input type="text" id="audience" placeholder="e.g., Tech professionals, Parents, Students">
+            
+            <label for="topic">Blog Topic:</label>
+            <input type="text" id="topic" placeholder="e.g., Health in Tech, Parenting Tips, Study Methods">
+            
+            <label for="tone">Desired Tone:</label>
+            <input type="text" id="tone" placeholder="e.g., Informative, Casual, Formal">
+            
+            <!-- Add more fields as needed -->
+        </div>
+
+        <!-- Contenteditable div acting as the textarea -->
+        <div id="textInput" contenteditable="true" style="border: 1px solid #ccc; padding: 10px; min-height: 100px; margin-bottom: 10px; border-radius: 10px; text-align: left;"></div>
+        <div id="tempscale">
+            <label for="temperature">AI Response Randomness:</label>
+            <input type="range" id="temperature" min="0.2" max="1" step="0.1" value="0.7">
+            <span id="temperatureValue">0.7</span>
+        </div>
+        <button onclick="requestAIAssistance()">Get AI Assistance</button>
+        <button onclick="clearForm()">Clear Form</button>
+        <div id="aiResponse"></div>
+    </section>
+{% endblock %}
+
+{% block js %}
+    <!-- Any JavaScript for the index page only -->
+    <script src="{% static 'js/scripts.js' %}"></script>
+    <script>
+        window.addEventListener('DOMContentLoaded', (event) => {
+    // Populate fields with stored values on page load
+    document.querySelectorAll('.data-inputs input, #textInput, #temperature').forEach(element => {
+        const storedValue = localStorage.getItem(element.id);
+        if (storedValue) {
+            if (element.tagName === "INPUT") {
+                element.value = storedValue;
+                if (element.id === 'temperature') {
+                    document.getElementById('temperatureValue').innerText = storedValue;
+                }
+            } else {
+                element.innerText = storedValue;
+            }
+        }
+    });
+
+    // Save data to localStorage when any field is updated
+    document.querySelectorAll('.data-inputs input, #textInput, #temperature').forEach(element => {
+        element.addEventListener('input', () => {
+            if (element.tagName === "INPUT") {
+                localStorage.setItem(element.id, element.value);
+
+                // If it's the temperature input, update the temperatureValue span
+                if (element.id === 'temperature') {
+                    document.getElementById('temperatureValue').innerText = element.value;
+                }
+            } else {
+                localStorage.setItem(element.id, element.innerText);
+            }
+        });
+    });
+});
+
+        function clearForm() {
+            document.querySelectorAll('.data-inputs input, #textInput').forEach(element => {
+                if (element.tagName === "INPUT") {
+                    element.value = ''; 
+                } else {
+                    element.innerText = '';
+                }
+    localStorage.removeItem(element.id); 
+            });
+        }
+
+        function requestAIAssistance() {
+            const audience = document.getElementById('audience').value;
+            const topic = document.getElementById('topic').value;
+            const tone = document.getElementById('tone').value;
+            const userInput = document.getElementById('textInput').innerText;
+            const temperature = document.getElementById('temperature').value;
+            
+            const url = `/get_ai_assistance?text=${encodeURIComponent(userInput)}&audience=${encodeURIComponent(audience)}&topic=${encodeURIComponent(topic)}&tone=${encodeURIComponent(tone)}&temperature=${temperature}`;
+            console.log("Requesting:", url);  
+
+            fetch(`/get_ai_assistance?text=${encodeURIComponent(userInput)}&audience=${encodeURIComponent(audience)}&topic=${encodeURIComponent(topic)}&tone=${encodeURIComponent(tone)}&temperature=${temperature}`)
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('aiResponse').innerText = data.ai_response;
+                });
+}
+    </script>
+{% endblock %}
