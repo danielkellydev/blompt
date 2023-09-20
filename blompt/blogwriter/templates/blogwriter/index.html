@@ -23,10 +23,11 @@
             
             <label for="tone">Desired Tone:</label>
             <input type="text" id="tone" placeholder="e.g., Informative, Casual, Formal">
-            
+            <div class="slider-container">
             <label for="level_of_assistance">Level of Assistance:</label>
-            <input type="range" id="level_of_assistance" min="0" max="1" step="0.1" value="0.5">
+            <input type="range" id="level_of_assistance" min="1" max="5" step="1" value="3">
             <span id="levelOfAssistanceValue">0.5</span>
+            </div>
             <!-- Add more fields as needed -->
         </div>
 
@@ -107,7 +108,7 @@
             const temperature = document.getElementById('temperature').value;
             const level_of_assistance = document.getElementById('level_of_assistance').value;
             
-            const url = `/get_ai_assistance?text=${encodeURIComponent(userInput)}&audience=${encodeURIComponent(audience)}&topic=${encodeURIComponent(topic)}&tone=${encodeURIComponent(tone)}&temperature=${temperature}`;
+            const url = `/get_ai_assistance?text=${encodeURIComponent(userInput)}&audience=${encodeURIComponent(audience)}&topic=${encodeURIComponent(topic)}&tone=${encodeURIComponent(tone)}&temperature=${temperature}&level_of_assistance=${level_of_assistance}`;
             console.log("Requesting:", url);  
 
             fetch(url)
