@@ -1,1 +1,1 @@
-web: cd blompt && python manage.py runserver
+web: gunicorn blompt.wsgi
