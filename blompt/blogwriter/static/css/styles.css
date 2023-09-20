@@ -68,24 +68,10 @@ button {
     cursor: pointer;
     border-radius: 8px;
     transition: background-color 0.3s ease, transform 0.3s ease;
+    margin-top: 20px;
 }
 
 button:hover {
     background-color: #FFB090;
     transform: translateY(-2px);
-}
-
-.slider-container {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-}
-
-.slider-wrapper {
-    display: flex;
-    align-items: center;  /* This ensures vertical alignment between slider and its value */
-}
-
-#level_of_assistance {
-    margin-right: 10px;  /* Adjust as needed for spacing between the slider and the value */
 }

@@ -14,30 +14,12 @@ def get_ai_assistance(request):
     user_input = request.GET.get('text', '')
     openai.api_key = settings.OPENAI_API_KEY 
     temperature = float(request.GET.get('temperature', '0.7'))
-    level_of_assistance = float(request.GET.get('level_of_assistance', '1.0'))
+
 
     # Determine prompt based on user input and assistance level
-    if not user_input:
-        starter_prompts = {
-            1.0: f"Considering the topic '{topic}', the audience '{audience}', and the tone '{tone}', give a very short suggestion. Ensure that the suggestion is complete and fits within the maximum character limit.",
-    2.0: f"Considering the topic '{topic}', the audience '{audience}', and the tone '{tone}', give a slightly longer suggestion. Ensure that the suggestion is complete and fits within the maximum character limit.",
-    3.0: f"Considering the topic '{topic}', the audience '{audience}', and the tone '{tone}', give a medium-length suggestion. Ensure that the suggestion is complete and fits within the maximum character limit.",
-    4.0: f"Considering the topic '{topic}', the audience '{audience}', and the tone '{tone}', provide an expanded suggestion. Ensure that the suggestion is complete and fits within the maximum character limit.",
-    5.0: f"Considering the topic '{topic}', the audience '{audience}', and the tone '{tone}', give a long detailed example suggestion. Ensure that the suggestion is complete and fits within the maximum character limit."
-        }
-        feedback_prompt = starter_prompts.get(level_of_assistance, starter_prompts[1.0]) # default to 1.0 if not found
-    else:
-        feedback_prompt = f"Considering the draft for the topic '{topic}', the audience '{audience}', and the tone '{tone}', provide feedback. Ensure that the feedback is complete and fits within the maximum character limit."
+    feedback_prompt = f"You are a writing assistant. The ethos behind this application is that instead of getting AI to do all the work, your role is to assist and prompt the writer. The writer's input will be found in {user_input}. First of all, consider what the writer's audience is. The audience is {audience}. Next, consider what the writer's topic is. The topic is {topic}. Finally, consider what the writer's tone is. The tone is {tone}. Now, based on the writer's input, audience, topic, and tone, provide the writer with some feedback. If the {user_input} is empty, please ask the writer some questions to get them started. If the {user_input} is not empty, please consider what the writer has written, how it relates to the audience, topic, and tone, and provide the writer with some feedback."
     
-    # Set max_tokens based on level of assistance
-    token_values = {
-        1.0: 50,
-        2.0: 100,
-        3.0: 150,
-        4.0: 200,
-        5.0: 250
-    }
-    max_tokens = token_values.get(level_of_assistance, token_values[1.0]) # default to 1.0 if not found
+    max_tokens = 300
 
     response = openai.Completion.create(
         engine="gpt-3.5-turbo-instruct",
