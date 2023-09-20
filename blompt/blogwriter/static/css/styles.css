@@ -75,3 +75,11 @@ button:hover {
     background-color: #FFB090;
     transform: translateY(-2px);
 }
+
+.slider-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
