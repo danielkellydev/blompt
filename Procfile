@@ -1,1 +1,1 @@
-web: gunicorn blompt.wsgi
+web: gunicorn blompt.wsgi:application
