@@ -24,6 +24,9 @@
             <label for="tone">Desired Tone:</label>
             <input type="text" id="tone" placeholder="e.g., Informative, Casual, Formal">
             
+            <label for="level_of_assistance">Level of Assistance:</label>
+            <input type="range" id="level_of_assistance" min="0" max="1" step="0.1" value="0.5">
+            <span id="levelOfAssistanceValue">0.5</span>
             <!-- Add more fields as needed -->
         </div>
 
@@ -44,21 +47,29 @@
     <!-- Any JavaScript for the index page only -->
     <script src="{% static 'js/scripts.js' %}"></script>
     <script>
-        window.addEventListener('DOMContentLoaded', (event) => {
-    // Populate fields with stored values on page load
-    document.querySelectorAll('.data-inputs input, #textInput, #temperature').forEach(element => {
-        const storedValue = localStorage.getItem(element.id);
-        if (storedValue) {
-            if (element.tagName === "INPUT") {
-                element.value = storedValue;
-                if (element.id === 'temperature') {
-                    document.getElementById('temperatureValue').innerText = storedValue;
+    window.addEventListener('DOMContentLoaded', (event) => {
+        // Populate fields with stored values on page load
+        document.querySelectorAll('.data-inputs input, #textInput, #temperature, #level_of_assistance').forEach(element => {
+            const storedValue = localStorage.getItem(element.id);
+            if (storedValue) {
+                if (element.tagName === "INPUT") {
+                    element.value = storedValue;
+                    if (element.id === 'temperature') {
+                        document.getElementById('temperatureValue').innerText = storedValue;
+                    }
+                    if (element.id === 'level_of_assistance') {
+                        document.getElementById('levelOfAssistanceValue').innerText = storedValue;
+                    }
+                } else {
+                    element.innerText = storedValue;
                 }
-            } else {
-                element.innerText = storedValue;
             }
-        }
-    });
+        });
+
+        // Update the displayed value for levelOfAssistanceValue when its value changes
+        document.getElementById('level_of_assistance').addEventListener('input', () => {
+            document.getElementById('levelOfAssistanceValue').innerText = document.getElementById('level_of_assistance').value;
+        });
 
     // Save data to localStorage when any field is updated
     document.querySelectorAll('.data-inputs input, #textInput, #temperature').forEach(element => {
@@ -94,11 +105,12 @@
             const tone = document.getElementById('tone').value;
             const userInput = document.getElementById('textInput').innerText;
             const temperature = document.getElementById('temperature').value;
+            const level_of_assistance = document.getElementById('level_of_assistance').value;
             
             const url = `/get_ai_assistance?text=${encodeURIComponent(userInput)}&audience=${encodeURIComponent(audience)}&topic=${encodeURIComponent(topic)}&tone=${encodeURIComponent(tone)}&temperature=${temperature}`;
             console.log("Requesting:", url);  
 
-            fetch(`/get_ai_assistance?text=${encodeURIComponent(userInput)}&audience=${encodeURIComponent(audience)}&topic=${encodeURIComponent(topic)}&tone=${encodeURIComponent(tone)}&temperature=${temperature}`)
+            fetch(url)
                 .then(response => response.json())
                 .then(data => {
                     document.getElementById('aiResponse').innerText = data.ai_response;
