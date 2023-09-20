@@ -1,0 +1,1 @@
+web: cd blompt && python manage.py runserver

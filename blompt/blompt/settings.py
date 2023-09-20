@@ -1,4 +1,8 @@
 import os
+import environ
+
+env = environ.Env()
+environ.Env.read_env(os.path.join('../', '.env'))
 
 """
 Django settings for blompt project.
@@ -129,4 +133,6 @@ STATICFILES_DIRS = [
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-OPENAI_API_KEY = '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'
+# OpenAI API Key from .env file 
+
+OPENAI_API_KEY = env('OPENAI_API_KEY')
